@@ -1,26 +1,201 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 248, 250, 252;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  /* Deep modern background: Black center, deep indigo edges */
+  background: radial-gradient(circle at center top, #1e1b4b, #020617);
+  min-height: 100vh;
+  background-attachment: fixed; /* Keeps bg static while scrolling */
+  position: relative;
+}
+
+/* Grid pattern background overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Ensure content sits above the grid */
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom Scrollbar for Chrome/Safari */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Modern Content Styling */
+.wp-content p { margin-bottom: 1.5rem; line-height: 1.8; color: #cbd5e1; }
+.wp-content h1, .wp-content h2 { 
+  color: white; 
+  font-weight: 800; 
+  margin-top: 2rem; 
+  margin-bottom: 1rem; 
+  letter-spacing: -0.025em;
+}
+.wp-content a { color: #22d3ee; text-decoration: none; border-bottom: 1px solid #22d3ee; transition: all 0.2s; }
+.wp-content a:hover { color: #67e8f9; border-bottom-width: 2px; }
+
+/* Custom Utility Class for the Hero Image */
+.hero-bg-img {
+  /* Points directly to the file in the public folder */
+  background-image: url("/rw-hero.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+/* CRT/Tube TV Effects */
+.crt-effect {
+  position: relative;
+}
+
+/* Scanlines overlay */
+.crt-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.15) 0px,
+    rgba(0, 0, 0, 0.15) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Screen flicker/glow effect */
+.crt-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(18, 16, 16, 0.05);
+  opacity: 0;
+  pointer-events: none;
+  animation: flicker 4s infinite;
+  z-index: 2;
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.05;
+  }
+  10% {
+    opacity: 0.08;
+  }
+  20% {
+    opacity: 0.03;
+  }
+  30% {
+    opacity: 0.12;
+  }
+  40% {
+    opacity: 0.06;
+  }
+  50% {
+    opacity: 0.15;
+  }
+  60% {
+    opacity: 0.04;
+  }
+  70% {
+    opacity: 0.10;
+  }
+  80% {
+    opacity: 0.07;
+  }
+  90% {
+    opacity: 0.09;
+  }
+  100% {
+    opacity: 0.05;
+  }
+}
+
+/* Shimmer animation for skeleton loaders */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Fade in animation for content */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Fade out animation for skeletons */
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-out forwards;
+}
+
+/* Logo brightness effect on hover */
+.logo-glow {
+  transition: filter 0.3s ease-out;
+}
+
+.logo-glow:hover {
+  filter: brightness(1.2);
 }

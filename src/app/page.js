@@ -1,65 +1,125 @@
+import { gql } from "@apollo/client";
+import { client } from "../lib/client";
 import Image from "next/image";
+import FeaturedGames from "../components/FeaturedGames";
 
-export default function Home() {
+// Systems to feature on the homepage (4 total * 2 games = 8)
+const FEATURED_PLATFORMS = ['sega-genesis', 'snes', 'turbografx-16', 'sega-master-system'];
+
+// Fisher-Yates shuffle implementation
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+  const newArray = [...array]; 
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+    [newArray[currentIndex], newArray[randomIndex]] = [
+      newArray[randomIndex], newArray[currentIndex]
+    ];
+  }
+  return newArray;
+}
+
+const GET_GAMES_QUERY = gql`
+  query GetGames {
+    games(first: 50) { 
+      nodes {
+        slug
+        title
+        platforms {
+          nodes { 
+            name
+            slug
+          }
+        }
+        gameData {
+          releaseYear
+          developer
+          boxArt {
+            node { sourceUrl altText }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export default async function Home() {
+  const { data } = await client.query({
+    query: GET_GAMES_QUERY,
+    fetchPolicy: "no-cache",
+  });
+
+  const allGames = data?.games?.nodes || [];
+  let finalFeaturedGames = [];
+
+  // --- Filter and Combine Logic (Pulls 3 from SNES to ensure 8 total) ---
+  for (const targetSlug of FEATURED_PLATFORMS) {
+    const limit = 4; 
+    
+    const platformGames = allGames.filter(game => 
+      game.platforms.nodes.some(p => p.slug === targetSlug)
+    );
+
+    const selected = shuffle(platformGames).slice(0, limit); 
+    
+    finalFeaturedGames = finalFeaturedGames.concat(selected);
+  }
+  // --- End Logic ---
+
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="p-8 max-w-7xl mx-auto">
+
+      {/* Hero Section - Image Background */}
+      <header className="relative overflow-hidden rounded-xl shadow-2xl mb-16 w-full crt-effect">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/rw-hero.webp"
+          alt="Retro Wizard - Your gateway to classic gaming history"
+          width={1280}
+          height={400}
+          className="w-full h-auto"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.js file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+      </header>
+
+      {/* Info Section */}
+      <section className="mb-16 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+        <div className="flex flex-col md:flex-row">
+          {/* Image - Left on desktop, Top on mobile */}
+          <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[500px]">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/rw-info.webp"
+              alt="16-bit gaming era"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+
+          {/* Text Content - Right on desktop, Bottom on mobile */}
+          <div className="w-full md:w-1/2 p-8 md:p-12">
+            <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-cyan-400 mb-6 tracking-tight">
+              The Golden Age of 16-Bit
+            </h2>
+            <div className="space-y-4 text-slate-300 leading-relaxed">
+              <p>
+                The 16-bit era wasn&apos;t just a technological leap—it was a cultural revolution. From 1988 to 1996, gaming transcended its 8-bit roots and exploded into vibrant worlds of Mode 7 graphics, blast processing, and CD-quality sound.
+              </p>
+              <p>
+                Retro Wizard is a digital shrine to this pivotal moment in gaming history. We&apos;ve meticulously catalogued the legendary titles that defined a generation: from the breakneck speed of Sonic to the epic adventures of Link, from the brutal combos of Street Fighter to the atmospheric horror of Castlevania.
+              </p>
+              <p className="text-rw-orange font-semibold">
+                This is more than nostalgia—it&apos;s preservation. Every pixel, every cartridge, every memory, immortalized.
+              </p>
+            </div>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Featured Games Section */}
+      <FeaturedGames games={finalFeaturedGames} />
+    </main>
   );
 }
