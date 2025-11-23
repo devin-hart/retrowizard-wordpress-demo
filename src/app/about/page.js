@@ -22,7 +22,7 @@ export default function AboutPage() {
           {/* Text Content - Left on desktop, Bottom on mobile */}
           <div className="order-2 md:order-1 w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
             <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-rw-orange to-purple-500 mb-6 tracking-tight">
-              About the Retro Wizard Archive
+              Devin Hart
             </h1>
             <p className="text-slate-300 text-lg leading-relaxed font-light">
               Hey! I hope you thought this was cool. This project is a demonstration of a modern, decoupled (Headless) architecture designed for high performance, dynamic routing, and efficient content management. It transforms a standard WordPress installation into a powerful, data-serving API.
@@ -50,7 +50,7 @@ export default function AboutPage() {
           <p>This application is built on three distinct layers:</p>
           <ul className="list-disc list-inside space-y-2 ml-4">
             <li>
-              <strong className="text-slate-200">Frontend (Presentation Layer):</strong> Built with <strong className="text-slate-200">Next.js</strong> (App Router, JavaScript) and styled with <strong className="text-slate-200">Tailwind CSS</strong> (utilizing the Synthwave color palette). This layer handles all user interactions and rendering.
+              <strong className="text-slate-200">Frontend (Presentation Layer):</strong> Built with <strong className="text-slate-200">Next.js</strong> (App Router, JavaScript) and styled with <strong className="text-slate-200">Tailwind CSS</strong>. This layer handles all user interactions and rendering.
             </li>
             <li>
               <strong className="text-slate-200">API (Transport Layer):</strong> <strong className="text-slate-200">WPGraphQL</strong> serves as the single, strongly-typed endpoint, replacing the need for multiple REST API calls. Data is transported via HTTP POST requests using Apollo Client.
