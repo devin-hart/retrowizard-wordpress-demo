@@ -9,10 +9,10 @@ export default function ImageModal({ src, alt }) {
   const Modal = () => (
     <div 
       onClick={() => setIsOpen(false)}
-      className="fixed inset-0 bg-black/90 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 cursor-zoom-out"
+      className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4 cursor-zoom-out"
     >
       {/* Container for the full-size image in the MODAL */}
-      <div className="relative w-full h-full max-w-6xl max-h-[95vh] overflow-hidden rounded-xl bg-gray-900 shadow-2xl"> 
+      <div className="relative w-full h-full max-w-6xl max-h-[95vh] overflow-hidden rounded-x shadow-2xl"> 
         {src ? (
           <Image 
             src={src}
@@ -28,7 +28,7 @@ export default function ImageModal({ src, alt }) {
         
         {/* Close Button - z-index is important to keep it above the image */}
         <button 
-          className="absolute top-4 right-4 text-white bg-black/50 p-2 rounded-full hover:bg-black/80 transition z-10"
+          className="absolute top-4 right-4 text-white bg-black/50 p-2 rounded-full hover:bg-black/70 transition z-10"
           aria-label="Close image"
           onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
         >

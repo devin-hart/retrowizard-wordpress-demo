@@ -5,14 +5,45 @@ import Image from "next/image";
 export default function AboutPage() {
   return (
     <main className="p-8 max-w-4xl mx-auto min-h-screen">
-      <h1 className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-rw-orange to-purple-500 mb-8 tracking-tight pb-2">
-        About the Retro Wizard Archive
-      </h1>
+      {/* Hero Section */}
+      <header className="relative mb-12 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-xl overflow-hidden shadow-2xl">
+        {/* Ambient Background Blur */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 opacity-20">
+          <Image
+            src="/devin.webp"
+            alt="Background"
+            fill
+            className="object-cover blur-[80px] scale-110"
+          />
+          <div className="absolute inset-0 bg-slate-900/90"></div>
+        </div>
+
+        <div className="flex flex-col md:flex-row items-stretch relative z-10">
+          {/* Text Content - Left on desktop, Bottom on mobile */}
+          <div className="order-2 md:order-1 w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+            <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-rw-orange to-purple-500 mb-6 tracking-tight">
+              About the Retro Wizard Archive
+            </h1>
+            <p className="text-slate-300 text-lg leading-relaxed font-light">
+              Hey! I hope you thought this was cool. This project is a demonstration of a modern, decoupled (Headless) architecture designed for high performance, dynamic routing, and efficient content management. It transforms a standard WordPress installation into a powerful, data-serving API.
+            </p>
+          </div>
+
+          {/* Image - Right on desktop, Top on mobile */}
+          <div className="order-1 md:order-2 w-full md:w-1/2 relative min-h-[400px] md:min-h-0">
+            <Image
+              src="/devin.webp"
+              alt="Retro Wizard"
+              fill
+              className="object-cover drop-shadow-2xl"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          </div>
+        </div>
+      </header>
 
       <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-xl p-8 shadow-xl">
-        <p className="text-xl text-slate-300 mb-6">
-          This project is a demonstration of a modern, decoupled (Headless) architecture designed for high performance, dynamic routing, and efficient content management. It transforms a standard WordPress installation into a powerful, data-serving API.
-        </p>
 
         <h2 className="text-3xl font-bold text-white mb-4 mt-8">The Technology Stack</h2>
         <div className="space-y-4 text-slate-400">

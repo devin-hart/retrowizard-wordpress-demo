@@ -106,7 +106,7 @@ export default async function GameDetails({ params }) {
               </div>
 
               {/* Data Grid */}
-              <div className="grid grid-cols-2 gap-8 mb-10 border-y border-white/5 py-8">
+              <div className="grid grid-cols-2 gap-8 mb-10">
                 <div>
                   <span className="block text-slate-500 text-xs uppercase tracking-widest font-bold mb-2">Developer</span>
                   <span className="font-medium text-white text-lg flex items-center gap-2">
@@ -121,16 +121,11 @@ export default async function GameDetails({ params }) {
               </div>
 
               {/* Description Section */}
-              <div className="border-t border-white/5 pt-6">
-                <h3 className="text-lg font-bold text-slate-200 mb-4 flex items-center gap-2">
-                  <svg className="w-5 h-5 text-purple-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0 1 1 0 002 0zm-1 8a1 1 0 01-1-1v-4a1 1 0 00-1-1 1 1 0 112 0v4a1 1 0 01-1 1z"></path></svg>
-                  Database Entry
-                </h3>
-                
+              <div>
                 {game.content && (
-                  <div 
+                  <div
                     className="wp-content prose prose-invert max-w-none text-slate-300 leading-relaxed font-light"
-                    dangerouslySetInnerHTML={{ __html: game.content }} 
+                    dangerouslySetInnerHTML={{ __html: game.content }}
                   />
                 )}
               </div>

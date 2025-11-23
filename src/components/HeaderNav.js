@@ -33,26 +33,32 @@ export default function HeaderNav({ platforms }) {
       
       {/* Desktop Navigation */}
       <div className="hidden md:flex items-center gap-6">
-        {platforms.map((platform) => (
-          <Link
-            key={platform.slug}
-            href={`/platform/${platform.slug}`}
-            className="flex items-center gap-2 transition-colors group"
-            aria-label={`Browse ${platform.name} games`}
-            title={platform.name}
-          >
-            {platformLogos[platform.slug] && (
-              <div className="relative w-20 h-10 sm:w-24 sm:h-12 md:w-28 md:h-14 lg:w-32 lg:h-16 xl:w-40 xl:h-20 logo-glow">
-                <Image
-                  src={platformLogos[platform.slug]}
-                  alt={`${platform.name} logo`}
-                  fill
-                  className="object-contain"
-                />
-              </div>
-            )}
-          </Link>
-        ))}
+        {platforms.map((platform) => {
+          // Use GraphQL logo if available, otherwise fallback to local
+          const logoUrl = platform.platformDetails?.platformLogo?.node?.sourceUrl || platformLogos[platform.slug];
+          const logoAlt = platform.platformDetails?.platformLogo?.node?.altText || `${platform.name} logo`;
+
+          return (
+            <Link
+              key={platform.slug}
+              href={`/platform/${platform.slug}`}
+              className="flex items-center gap-2 transition-colors group"
+              aria-label={`Browse ${platform.name} games`}
+              title={platform.name}
+            >
+              {logoUrl && (
+                <div className="relative w-20 h-10 sm:w-24 sm:h-12 md:w-28 md:h-14 lg:w-32 lg:h-16 xl:w-40 xl:h-20 logo-glow">
+                  <Image
+                    src={logoUrl}
+                    alt={logoAlt}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              )}
+            </Link>
+          );
+        })}
         <Link
           href="/about"
           className="text-slate-300 hover:text-rw-orange transition-colors"
@@ -86,28 +92,34 @@ export default function HeaderNav({ platforms }) {
 
           {/* 2. Mobile Navigation Links with Logos */}
           <div className="flex flex-col w-full">
-            {platforms.map((platform) => (
-              <div key={platform.slug} className="w-full border-b border-white/5">
-                <Link
-                  href={`/platform/${platform.slug}`}
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center justify-start logo-glow"
-                  aria-label={`Browse ${platform.name} games`}
-                  title={platform.name}
-                >
-                  {platformLogos[platform.slug] && (
-                    <div className="relative w-48 h-24">
-                      <Image
-                        src={platformLogos[platform.slug]}
-                        alt={`${platform.name} logo`}
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                  )}
-                </Link>
-              </div>
-            ))}
+            {platforms.map((platform) => {
+              // Use GraphQL logo if available, otherwise fallback to local
+              const logoUrl = platform.platformDetails?.platformLogo?.node?.sourceUrl || platformLogos[platform.slug];
+              const logoAlt = platform.platformDetails?.platformLogo?.node?.altText || `${platform.name} logo`;
+
+              return (
+                <div key={platform.slug} className="w-full border-b border-white/5">
+                  <Link
+                    href={`/platform/${platform.slug}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-start logo-glow"
+                    aria-label={`Browse ${platform.name} games`}
+                    title={platform.name}
+                  >
+                    {logoUrl && (
+                      <div className="relative w-48 h-24">
+                        <Image
+                          src={logoUrl}
+                          alt={logoAlt}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
+                    )}
+                  </Link>
+                </div>
+              );
+            })}
             <div className="w-full border-b border-white/5">
               <Link
                 href="/about"

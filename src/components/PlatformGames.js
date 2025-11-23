@@ -37,13 +37,11 @@ export default function PlatformGames({ games }) {
           <GameCardSkeleton key={i} className={isFadingOut ? "fade-out" : ""} />
         ))
       ) : (
-        // Show actual game cards with fade-in
-        games.map((game, index) => (
+        // Show actual game cards
+        games.map((game) => (
           <GameCard
             key={game.slug}
             game={game}
-            className="fade-in"
-            style={{ animationDelay: `${index * 0.03}s` }}
           />
         ))
       )}

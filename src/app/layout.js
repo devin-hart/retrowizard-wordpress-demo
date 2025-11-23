@@ -10,6 +10,14 @@ const GET_MENU_QUERY = gql`
       nodes {
         name
         slug
+        platformDetails {
+          platformImage {
+            node {
+              sourceUrl
+              altText
+            }
+          }
+        }
       }
     }
   }
